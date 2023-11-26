@@ -7,7 +7,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
     const [anime, setAnime] = useState([]);
     const [animeRecomend, setAnimeRecomend] = useState([]);
 

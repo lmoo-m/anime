@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import Pagination from "@/components/Pagination";
 import { motion } from "framer-motion";
 
-export default function page() {
+export default function Page() {
     const [anime, setAnime] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
