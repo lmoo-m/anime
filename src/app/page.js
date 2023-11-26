@@ -2,30 +2,44 @@
 
 import AnimeList from "@/components/AnimeList";
 import HeaderPage from "@/components/HeaderPage";
-import React, { useEffect, useState } from "react";
+import { animeSpliceRandom, getAnime } from "@/libs/animeRequest";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
 
 export default function page() {
-  const [anime, setAnime] = useState([]);
-  const getAnime = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASEURL}top/anime?limit=8`
+    const [anime, setAnime] = useState([]);
+    const [animeRecomend, setAnimeRecomend] = useState([]);
+
+    const get = async () => {
+        let response = await getAnime("top/anime");
+        setAnime(response.splice(0, 4));
+        setAnimeRecomend(animeSpliceRandom(response, 4));
+    };
+
+    useEffect(() => {
+        Aos.init({
+            duration: 800,
+            once: false,
+        });
+        return () => get();
+    }, []);
+
+    return (
+        <div>
+            <HeaderPage
+                title={"Recomendasi Untuk Mu..."}
+                linkHref={"/top"}
+                linkTitle={"Lihat Selengkapnya"}
+            />
+            <AnimeList anime={animeRecomend} />
+
+            <HeaderPage
+                title={"Paling Populer"}
+                linkHref={"/top"}
+                linkTitle={"Lihat Selengkapnya"}
+            />
+            <AnimeList anime={anime} />
+        </div>
     );
-    const { data } = await res.json();
-    setAnime(data);
-  };
-
-  useEffect(() => {
-    getAnime();
-  }, []);
-
-  return (
-    <div>
-      <HeaderPage
-        title={"Paling Populer"}
-        linkHref={"/top"}
-        linkTitle={"Lihat Selengkapnya"}
-      />
-      <AnimeList anime={anime} />
-    </div>
-  );
 }
