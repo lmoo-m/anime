@@ -22,7 +22,8 @@ export default function Page() {
             duration: 800,
             once: false,
         });
-        return () => get();
+
+        get();
     }, []);
 
     return (
